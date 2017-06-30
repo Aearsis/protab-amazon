@@ -1,0 +1,51 @@
+
+.table-balance tr td,
+.table-balance tr th {
+    text-align: center;
+}
+
+.table-balance tr td:first-child,
+.table-balance tr th:first-child {
+    text-align: right;
+}
+
+.ent-strategic {
+   background-color: rgb(255, 188, 154);
+}
+
+.pull-center {
+    text-align: center;
+}
+
+.recipe-performable {
+
+}
+
+.recipe-nonperformable {
+    background-color: transparent;
+}
+
+.recipe-nonperformable small, .recipe-nonperformable a, .recipe-nonperformable {
+    color: #828282 !important;
+}
+
+.eicon {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url("../img/icons-sprite.png");
+}
+
+.entity-thumbnail {
+    width: 120px;
+    height: 120px;
+    padding: 20px 0;
+    float: left;
+    margin: 5px;
+}
+
+.entity strong {
+    display: block;
+    text-align: center;
+}
