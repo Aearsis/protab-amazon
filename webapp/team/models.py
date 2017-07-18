@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 
-from webapp.utils import random_token
-
 
 class Team(models.Model):
     name = models.CharField(max_length=256, unique=True, verbose_name="Název týmu")
@@ -23,13 +21,22 @@ class Team(models.Model):
 class Player(models.Model):
     TOKEN_LEN = 10
 
-    # Oh yeah, we store the password for players in plaintext.
+    # Oh yeah, we store the "password" for players in plaintext.
     login_token = models.CharField(max_length=TOKEN_LEN)
 
     user = models.OneToOneField(User)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)
 
-    @classmethod
+    # Name for the purpose of chatting
+    name = models.TextField()
+    # Name in instrumental
+    instr = models.TextField()
 
     def __str__(self):
-        return self.user.first_name + "/" + str(self.team)
+        return "{} / {}".format(self.team, self.user.first_name)
+
+
+class PlayerMenuItem(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    label = models.CharField(max_length=64)
+    url = models.CharField(max_length=128)

@@ -49,3 +49,25 @@
     display: block;
     text-align: center;
 }
+
+.messenger .message {
+    margin-bottom: .5em;
+}
+
+.messenger .author {
+    font-weight: bold;
+    color: darkred;
+}
+
+.messenger .author.myself {
+    color: darkblue;
+}
+
+.messenger .message-hidden {
+    opacity: .5;
+}
+
+#messenger {
+    max-height: 600px;
+    overflow-y: auto;
+}

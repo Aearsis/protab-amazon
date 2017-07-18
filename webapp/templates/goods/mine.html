@@ -3,17 +3,12 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-        <form action="{% url "goods:mine" %}" method="post">
+        <form action="{% url "mine" %}" method="post">
             {% csrf_token %}
             {{ form|bootstrap }}
         </form>
     </div>
 </div>
 
-<script>
-
-window.onload = function() {
-    $("#id_code").focus();
-};
-</script>
+<p class="text-center"><i>Tip: Pole je case-insensitive.</i></p>
 {% endblock %}

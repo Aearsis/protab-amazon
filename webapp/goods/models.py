@@ -21,10 +21,10 @@ class Goods(models.Model):
     type = models.ForeignKey(GoodsType)
 
     # Phase one: no owner
-    token = models.CharField(6, max_length=TOKEN_LEN, primary_key=True)
+    token = models.CharField(max_length=TOKEN_LEN, primary_key=True)
 
     # Phase two: owning team
-    mined_time = models.DateField(null=True, default=None)
+    mined_at = models.DateField(null=True, default=None)
     owner = models.ForeignKey(Team, null=True, default=None)
 
     # Phase three: sold
@@ -63,6 +63,7 @@ class Goods(models.Model):
         g.mined_time = datetime.now()
         g.owner = team
         g.save()
+        return g
 
     @classmethod
     @transaction.atomic
@@ -74,6 +75,7 @@ class Goods(models.Model):
         g.sold_at = datetime.now()
         g.sold_for = type.get_price(g.sold_at)
         g.save()
+        return g
 
     class InvalidStateTransition(Exception):
         pass

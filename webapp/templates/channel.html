@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+
+<div class="messenger" id="messenger">
+    {% include 'bits/channel.html' %}
+</div>
+
+<form method="post" role="form" id="id_form">
+    {% csrf_token %}
+    <div class="input-group">
+        <textarea name="content" id="id_content" rows="1" class="form-control" autofocus></textarea>
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary center-block form-control">Odeslat</button>
+        </span>
+    </div>
+</form>
+<div class="text-center"><em>Tip: Ctrl+Enter odešle zprávu.</em></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('#id_content').keydown(function (e) {
+      if (e.ctrlKey && e.keyCode == 13) {
+          e.preventDefault();
+          $("#id_form").submit();
+      }
+    });
+    var messenger = $('#messenger');
+    function refresh_messages() {
+        $.ajax({
+            url: "{% url 'ajax-channel' view.args.0 %}",
+            success: function (data, textStatus, xhr) {
+                messenger.html(data).scrollTop(messenger.innerHeight());
+                var refresh = parseInt(xhr.getResponseHeader('X-Refresh-After'));
+                setTimeout(refresh_messages, refresh * 1000);
+            }
+        });
+    }
+    $(function() {
+        var firstRefresh = {{ refresh_after }};
+        messenger.scrollTop(messenger.innerHeight());
+        setTimeout(refresh_messages, firstRefresh * 1000);
+    });
+</script>
+
+{% endblock %}

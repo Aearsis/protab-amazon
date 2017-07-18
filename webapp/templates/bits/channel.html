@@ -1,0 +1,12 @@
+{% for message in visible_messages %}
+    <div class="message{% if message.hidden %} message-hidden{% endif %}">
+        <span class="time">{{ message.posted|date:"H:i:s" }}</span>
+        <span class="author{% if message.myself %} myself{% endif %}">{{ message.author.name }}:</span>
+        <span class="content">{{ message.content|linebreaksbr }}</span>
+    </div>
+{% endfor %}
+
+<div class="text-center" id="anchor-chat-end">
+    <small>Poslední refresh v {% now 'H:i:s' %}.</small>
+</div>
+

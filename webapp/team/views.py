@@ -1,7 +1,9 @@
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseForbidden
+from django.views.generic import TemplateView
 
 from team.forms import TokenAuthenticationForm
+from team.models import Team
 
 
 class TokenLoginView(LoginView):
@@ -15,3 +17,10 @@ class TokenLoginView(LoginView):
         return super(TokenLoginView, self).dispatch(request, *args, **kwargs)
 
 
+class ScoreView(TemplateView):
+    template_name = "score.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ScoreView, self).get_context_data(**kwargs)
+        context['score'] = Team.get_score_table()
+        return context

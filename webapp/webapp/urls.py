@@ -19,12 +19,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView
 
-from team.views import TokenLoginView
+from chat.views import ChannelView, MessagesView
+from goods.views import MineView, StorageView
+from team.views import TokenLoginView, ScoreView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', TokenLoginView.as_view(), name='login'),
     url(r'^logout/$', LogoutView.as_view(template_name='logout.html'), name='logout'),
-    url(r'^goods/', include('goods.urls', namespace='goods')),
+    url(r'^mine/$', MineView.as_view(), name='mine'),
+    url(r'^storage/$', StorageView.as_view(), name='storage'),
+    url(r'^scoreboard/$', ScoreView.as_view(), name='score'),
+    url(r'^channel/([0-9]+)$', ChannelView.as_view(), name='channel'),
+    url(r'^ajax/channel/([0-9]+)$', MessagesView.as_view(), name='ajax-channel'),
     url(r'^$', login_required(TemplateView.as_view(template_name='homepage.html')), name='homepage'),
 ]

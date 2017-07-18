@@ -17,10 +17,15 @@
     </div>
     <div class="container-fluid">
         <ul class="nav navbar-nav navbar">
+            <li><a href="{% url 'score' %}">Výsledky týmů</a></li>
             {% if user.is_authenticated %}
                 {% if perms.goods.can_mine  %}
-                <li><a href="{% url 'goods:mine' %}">Těžba</a></li>
+                <li><a href="{% url 'mine' %}">Těžba</a></li>
+                <li><a href="{% url 'storage' %}">Sklad</a></li>
                 {% endif %}
+                {% for mi in user.player.playermenuitem_set.all %}
+                    <li><a href="{{ mi.url }}">{{ mi.label }}</a></li>
+                {% endfor %}
             {% endif %}
         </ul>
         <ul class="nav navbar-right navbar-nav">
@@ -34,6 +39,9 @@
 </nav>
 
 <div class="container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
     {% block content %}{% endblock %}
 </div>
 

@@ -3,9 +3,6 @@ from django.contrib.auth.decorators import user_passes_test, permission_required
 
 
 def player_required(view_func):
-    """
-    Decorator that ensures logged user have a team
-    """
     player_decorator = user_passes_test(
         lambda u: hasattr(u, 'player') and u.player is not None
     )

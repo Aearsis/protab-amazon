@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block content %}
+<table class="table table-balance">
+    <thead>
+    <tr>
+        <th>Surovina</th>
+        <th>Na skladě</th>
+        <th>Prodáno</th>
+        <th>Zisk</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in storage %}
+        <tr>
+            <td>{{ row.name }}</td>
+            <td>{{ row.mined_count }}</td>
+            <td>{{ row.sold_count }}</td>
+            <td>{{ row.earn }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
