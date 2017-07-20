@@ -10,9 +10,9 @@ from django.contrib.auth.models import Permission, User
 from django.db import transaction
 
 from chat.models import Message, Channel
-from goods.models import Goods, GoodsType
+from goods.models import Goods, GoodsType, SellSlot
 from team.models import Player, Team, PlayerMenuItem
-from webapp.settings import DEBUG
+from webapp.settings import DEBUG, SELL_SLOTS
 from webapp.utils import random_token
 
 foo = wsgi.application
@@ -20,7 +20,7 @@ random.seed(42)
 
 
 def clean_all():
-    for model in (Message, Channel, Goods, GoodsType, PlayerMenuItem, Player, Team):
+    for model in (Message, Channel, Goods, PlayerMenuItem, SellSlot, Player, Team):
         model.objects.all().delete()
 
     User.objects.filter(username__startswith='player').delete()
@@ -73,6 +73,9 @@ def init_teams(count):
         broker = create_player(t, "Broker", "Makléři", "makléři")
         seller = create_player(t, "Seller", "Obchodníci", "obchodníky")
 
+        for i in range(SELL_SLOTS):
+            SellSlot.create_for(seller)
+
         miner.user.user_permissions.add(mine_perm)
         seller.user.user_permissions.add(sell_perm)
 
@@ -86,15 +89,16 @@ def init_teams(count):
 
         p = Player()
         p.user = User.objects.get(username='aearsis')
+        p.name = "Orgové"
+        p.team = t
+        p.instr = "Orgy"
         p.save()
+        for i in range(SELL_SLOTS):
+            SellSlot.create_for(p)
 
 
 def init_goods(count):
-    for type in ["Mikroprocesory", "Tučňáci", "Okýnka"]:
-        gt = GoodsType()
-        gt.name = type
-        gt.save()
-
+    for gt in GoodsType.objects.all():
         for _ in range(count):
             g = Goods()
             g.type = gt

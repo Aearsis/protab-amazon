@@ -1,0 +1,9 @@
+<tbody>
+{% for row in score %}
+    <tr>
+        <td>{{ forloop.counter }}.</td>
+        <td>{{ row.name }}</td>
+        <td>{{ row.score | default_if_none:0 | floatformat:3}}</td>
+    </tr>
+{% endfor %}
+</tbody>

@@ -20,8 +20,11 @@
             <li><a href="{% url 'score' %}">Výsledky týmů</a></li>
             {% if user.is_authenticated %}
                 {% if perms.goods.can_mine  %}
-                <li><a href="{% url 'mine' %}">Těžba</a></li>
-                <li><a href="{% url 'storage' %}">Sklad</a></li>
+                    <li><a href="{% url 'mine' %}">Těžba</a></li>
+                    <li><a href="{% url 'storage' %}">Sklad</a></li>
+                {% endif %}
+                {% if perms.goods.can_sell  %}
+                    <li><a href="{% url 'market' %}">Trh</a></li>
                 {% endif %}
                 {% for mi in user.player.playermenuitem_set.all %}
                     <li><a href="{{ mi.url }}">{{ mi.label }}</a></li>

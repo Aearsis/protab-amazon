@@ -17,10 +17,14 @@ class TokenLoginView(LoginView):
         return super(TokenLoginView, self).dispatch(request, *args, **kwargs)
 
 
-class ScoreView(TemplateView):
-    template_name = "score.html"
+class AjaxScoreView(TemplateView):
+    template_name = 'bits/score.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ScoreView, self).get_context_data(**kwargs)
+        context = super(AjaxScoreView, self).get_context_data(**kwargs)
         context['score'] = Team.get_score_table()
         return context
+
+
+class ScoreView(AjaxScoreView):
+    template_name = "score.html"

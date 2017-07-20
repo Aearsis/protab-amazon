@@ -24,7 +24,9 @@ SECRET_KEY = 'c*w=bqh(c-0*m61)ulhgyh!y*2hnh8sx)f@7xbhm9r8(ng844w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.107"]
+SITE_ID = 1
+
+ALLOWED_HOSTS = ["academy.protab.cz"]
 
 # Application definition
 
@@ -77,8 +79,12 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'protab',
+        'USER': 'protab',
+        'PASSWORD': 'KarelJaromir',
+        'Host': 'localhost',
+        'PORT': ''
     }
 }
 
@@ -118,6 +124,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, '../run/static')
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
+
+SELL_SLOTS = 2

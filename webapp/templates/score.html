@@ -1,20 +1,29 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 {% block content %}
-<table class="table table-balance">
+<table class="table table-balance" id="scoreboard">
     <thead>
     <tr>
+        <th>Aktuální pořadí</th>
         <th>Tým</th>
         <th>Zisk</th>
     </tr>
     </thead>
-    <tbody>
-    {% for row in score %}
-        <tr>
-            <td>{{ row.name }}</td>
-            <td>{{ row.score | default_if_none:0 }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
+    {% include 'bits/score.html' %}
 </table>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    var sbody = $("#scoreboard").find('tbody');
+
+    setInterval(function () {
+        $.ajax({
+            url: "{% url 'ajax-score' %}",
+            success: function (data, textStatus, xhr) {
+                sbody.replaceWith(data);
+            }
+        });
+    }, 5000);
+</script>
 {% endblock %}

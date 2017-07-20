@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block content %}
+
+<p>Každý z vás může prodávat nezávisle, pokud zvládne aktivitu sám.</p>
+
+<div class="row">
+    {% for slot in slots %}
+    <div class="col-sm-12 col-md-6">
+        {% if slot.is_free %}
+        <ul class="nav">
+            {% for type in types %}
+                <li><a href="{% url 'sell' slot.pk type.pk %}">{{ type.name }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            {{ slot.selling.sell_quest | safe }}
+
+            <a href="{% url 'finish-quest' slot.pk %}" class="btn btn-primary center-block">Provedl jsem úkol</a>
+            <a href="{% url 'abort-quest' slot.pk %}" class="btn btn-danger center-block">Vzdávám úkol</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -15,7 +15,7 @@ class PostMessageForm(Form):
 class ChannelMixin(ContextMixin, View):
     def get_channel(self) -> Channel:
         c = get_object_or_404(Channel, id=self.args[0])
-        if not self.request.player in c.players.all() and not self.request.user.has_perm('channel', 'view_all'):
+        if self.request.player not in c.players.all() and not self.request.user.has_perm('channel', 'view_all'):
             raise PermissionDenied("You're not a member of this channel.")
         return c
 
@@ -35,7 +35,7 @@ class ChannelMixin(ContextMixin, View):
         return context
 
     def get_refresh_sec(self):
-        return int(self.get_channel().get_next_refresh_time().total_seconds())
+        return self.get_channel().get_next_refresh_time().total_seconds()
 
 
 class MessagesView(ChannelMixin, TemplateView):

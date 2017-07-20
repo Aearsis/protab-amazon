@@ -34,14 +34,14 @@
             success: function (data, textStatus, xhr) {
                 messenger.html(data).scrollTop(messenger.innerHeight());
                 var refresh = parseInt(xhr.getResponseHeader('X-Refresh-After'));
-                setTimeout(refresh_messages, refresh * 1000);
+                setTimeout(refresh_messages, refresh * 1000 + 420);
             }
         });
     }
     $(function() {
-        var firstRefresh = {{ refresh_after }};
+        var firstRefresh = {{ refresh_after | safe }};
         messenger.scrollTop(messenger.innerHeight());
-        setTimeout(refresh_messages, firstRefresh * 1000);
+        setTimeout(refresh_messages, firstRefresh * 1000 + 420);
     });
 </script>
 
