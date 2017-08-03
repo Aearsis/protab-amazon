@@ -7,27 +7,27 @@ Math based on this article:
 
 import math
 
-import datetime
+from datetime import datetime, timedelta
 import numpy
 import random
+
 import scipy.linalg
 import numpy.random as nrand
 
 # The time data will be generated for - an hour before game, an hour after
-from filecache import filecache
 
-inception = datetime.datetime.today().replace(hour=13, minute=0, second=0, microsecond=0)
-destruction = datetime.datetime.today().replace(hour=19, minute=0, second=0, microsecond=0)
+inception = datetime.today().replace(hour=13, minute=00, second=0, microsecond=0)
+destruction = datetime.today().replace(hour=19, minute=00, second=0, microsecond=0)
 eternity_sec = int((destruction - inception).total_seconds())
 
 # The time in which data will be normalized
-game_start = datetime.datetime.today().replace(hour=14, minute=30)
-game_end = datetime.datetime.today().replace(hour=16, minute=30)
+game_start = datetime.today().replace(hour=14, minute=30)
+game_end = datetime.today().replace(hour=17, minute=00)
 game_length = game_end - game_start
 
 game_sec = int(game_length.total_seconds())
 
-second = datetime.timedelta(seconds=1)
+second = timedelta(seconds=1)
 
 
 class ModelParameters:
@@ -162,8 +162,8 @@ def get_correlated_geometric_brownian_motions(param, correlation_matrix, n):
 
 def gen_stock(i):
     # Generate random levels using Heston model
-    random.seed(420 + i)
-    nrand.seed(420 + i)
+    random.seed(437 + i)
+    nrand.seed(437 + i)
     params = ModelParameters(1, eternity_sec)
     levels = heston_levels(params)
 
@@ -175,7 +175,6 @@ def gen_stock(i):
 
 
 stock = [gen_stock(i) for i in range(5)]
-
 
 def get_stock_value(i, time):
     delta = time - inception

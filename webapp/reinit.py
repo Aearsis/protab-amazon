@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from webapp import wsgi
 
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import Permission, User, Group
 from django.db import transaction
 
 from chat.models import Message, Channel
@@ -20,7 +20,7 @@ random.seed(42)
 
 
 def clean_all():
-    for model in (Message, Channel, Goods, PlayerMenuItem, SellSlot, Player, Team):
+    for model in (Message, Channel, PlayerMenuItem, SellSlot, Player, Team):
         model.objects.all().delete()
 
     User.objects.filter(username__startswith='player').delete()
@@ -60,8 +60,8 @@ def create_player(team: Team, role: str, name: str, instr: str):
 
 
 def init_teams(count):
-    mine_perm = Permission.objects.get(codename='goods.can_mine')
-    sell_perm = Permission.objects.get(codename='goods.can_sell')
+    mine_group = Group.objects.get(name='Miners')
+    sell_group = Group.objects.get(name='Sellers')
 
     for i in range(count):
         t = Team(i)
@@ -69,15 +69,18 @@ def init_teams(count):
         t.save()
         print(t.name)
 
-        miner = create_player(t, "Miner", "Těžaři", "těžaři")
-        broker = create_player(t, "Broker", "Makléři", "makléři")
-        seller = create_player(t, "Seller", "Obchodníci", "obchodníky")
+        miner = create_player(t, "Továrník", "Továrníci", "továrníky")
+        broker = create_player(t, "Broker", "Obchodní manažeři", "obchodními manažery")
+        seller = create_player(t, "Seller", "Prodavači", "prodavači")
 
         for i in range(SELL_SLOTS):
             SellSlot.create_for(seller)
 
-        miner.user.user_permissions.add(mine_perm)
-        seller.user.user_permissions.add(sell_perm)
+        miner.user.groups.add(mine_group)
+        seller.user.groups.add(sell_group)
+
+        miner.save()
+        seller.save()
 
         create_channel(broker, miner)
         create_channel(broker, seller)
@@ -110,7 +113,7 @@ def init_goods(count):
 def initialize():
     clean_all()
     init_teams(4)
-    init_goods(10)
+    #init_goods(300)
 
 
 if __name__ == '__main__':

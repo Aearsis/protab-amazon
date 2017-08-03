@@ -25,6 +25,7 @@ class ChannelMixin(ContextMixin, View):
             'posted': m.posted,
             'hidden': not m.is_visible(),
             'myself': m.author == self.request.player,
+            'delivered': m.visible,
             'content': m.content,
         } for m in self.get_channel().get_visible_messages(self.request.player)]
 

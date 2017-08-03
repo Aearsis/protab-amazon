@@ -22,11 +22,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c*w=bqh(c-0*m61)ulhgyh!y*2hnh8sx)f@7xbhm9r8(ng844w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 SITE_ID = 1
 
-ALLOWED_HOSTS = ["academy.protab.cz"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 # Application definition
 

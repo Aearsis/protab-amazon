@@ -13,7 +13,7 @@ class Channel(models.Model):
 
     # The messages are queued through leaky bucket. The minimal delay is MAX_REFRESH_PERIOD,
     # and at most one message per MIN_MESSAGE_PERIOD is sent.
-    MAX_REFRESH_PERIOD = timedelta(seconds=10)
+    MAX_REFRESH_PERIOD = timedelta(seconds=3)
     MIN_MESSAGE_PERIOD = timedelta(seconds=60)
 
     class Meta:
@@ -35,13 +35,15 @@ class Channel(models.Model):
     def get_visible_messages(self, for_player):
         return self.message_set.filter(Q(visible__lte=timezone.now()) | Q(author=for_player))
 
-    def get_next_visible_time(self, author) -> datetime:
-        if author.user.has_perm('channel.admin'):
+    def get_next_visible_time(self, message) -> datetime:
+        if message.author.user.has_perm('channel.admin'):
             return timezone.now()
         try:
-            last_visible = self.message_set.filter(author=author).order_by('-visible')[0].visible
+            last_visible = self.message_set.filter(author=message.author).order_by('-visible')[0].visible
             after_last_msg = last_visible + Channel.MIN_MESSAGE_PERIOD
-            return max(after_last_msg, timezone.now() + Channel.MAX_REFRESH_PERIOD)
+
+            typing_delay = last_visible + ((len(message.content) / 300) * timedelta(seconds=1))
+            return max(after_last_msg, typing_delay, timezone.now() + Channel.MAX_REFRESH_PERIOD)
         except IndexError:
             return timezone.now() + Channel.MAX_REFRESH_PERIOD
 
@@ -50,8 +52,8 @@ class Channel(models.Model):
         msg.author = author
         msg.channel = self
         msg.posted = timezone.now()
-        msg.visible = self.get_next_visible_time(author)
         msg.content = content
+        msg.visible = self.get_next_visible_time(msg)
         return msg.save()
 
 

@@ -7,20 +7,22 @@
     <link href = "{% static 'css/bootstrap.css' %}" rel = "stylesheet">
     <link href = "{% static 'css/main.css' %}" rel = "stylesheet">
     <link href = "{% static 'css/sprites.css' %}" rel = "stylesheet">
-    <title>{% block title %}Ekonomická hra{% endblock %}</title>
+    <title>{% block title %}Amazon{% endblock %}</title>
 </head>
 <body>
 
 <nav class="navbar navbar-default navbar-static-top">
     <div class="navbar-header">
-      <a class="navbar-brand" href="{% url 'homepage' %}">Ekonomická hra</a>
+      <a class="navbar-brand" href="{% url 'homepage' %}">Amazon
+      {% if view.request.team %}: {{ view.request.team.name }}{% endif %}
+      </a>
     </div>
     <div class="container-fluid">
         <ul class="nav navbar-nav navbar">
             <li><a href="{% url 'score' %}">Výsledky týmů</a></li>
             {% if user.is_authenticated %}
                 {% if perms.goods.can_mine  %}
-                    <li><a href="{% url 'mine' %}">Těžba</a></li>
+                    <li><a href="{% url 'mine' %}">Továrna</a></li>
                     <li><a href="{% url 'storage' %}">Sklad</a></li>
                 {% endif %}
                 {% if perms.goods.can_sell  %}

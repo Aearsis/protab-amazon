@@ -54,6 +54,10 @@
     margin-bottom: .5em;
 }
 
+.messenger .messenger:nth-child(even) {
+    background-color: gray;
+}
+
 .messenger .author {
     font-weight: bold;
     color: darkred;
@@ -70,4 +74,13 @@
 #messenger {
     max-height: 600px;
     overflow-y: auto;
+}
+
+.messenger .delivered {
+    display: block;
+    width: 200px;
+    margin-left: -200px;
+    text-align: right;
+    opacity: .5;
+    float: right;
 }

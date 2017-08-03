@@ -46,6 +46,7 @@ class FinishQuestView(SellSlotMixin, View):
         slot.finish_selling()
         return redirect('market')
 
+
 @method_decorator(seller_required, name='dispatch')
 class AbortQuestView(SellSlotMixin, View):
     def get(self, request, *args, **kwargs):
@@ -86,10 +87,19 @@ class StorageView(TemplateView):
                 When(goods__owner=self.request.team, goods__sold_at__isnull=False, then=1),
                 default=0,
                 output_field=IntegerField()))
-            # ,
-            # earn=Sum(Case(
-            #    When(goods__owner=self.request.team, goods__sold_at__isnull=False, then='goods__sold_for'),
-            #    default=0,
-            #    output_field=FloatField()))
+            ,
+            earn=Sum(Case(
+                When(goods__owner=self.request.team, goods__sold_at__isnull=False, then='goods__sold_for'),
+                default=0,
+                output_field=FloatField()))
         )
+        return context
+
+
+class TokensView(TemplateView):
+    template_name = 'goods/tokens.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TokensView, self).get_context_data(**kwargs)
+        context['goods'] = Goods.objects.all()
         return context

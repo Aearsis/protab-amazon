@@ -1,5 +1,6 @@
 {% for message in visible_messages %}
     <div class="message{% if message.hidden %} message-hidden{% endif %}">
+        {% if message.hidden is False %}<span class="delivered">{{ message.delivered | date:"H:i:s" }}</span>{% endif %}
         <span class="time">{{ message.posted|date:"H:i:s" }}</span>
         <span class="author{% if message.myself %} myself{% endif %}">{{ message.author.name }}:</span>
         <span class="content">{{ message.content|linebreaksbr }}</span>

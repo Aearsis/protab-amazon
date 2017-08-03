@@ -56,7 +56,7 @@ class Goods(models.Model):
 
     class Meta:
         permissions = (
-            ('goods.can_mine', 'Insert tokens'),
+            ('can_mine', 'Insert tokens'),
             ('goods.can_sell', 'Sell goods')
         )
 

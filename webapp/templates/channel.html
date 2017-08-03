@@ -16,13 +16,13 @@
         </span>
     </div>
 </form>
-<div class="text-center"><em>Tip: Ctrl+Enter odešle zprávu.</em></div>
+<div class="text-center"><em>Tip: Enter odešle zprávu, Shift+Enter odřádkuje.</em></div>
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript">
     $('#id_content').keydown(function (e) {
-      if (e.ctrlKey && e.keyCode == 13) {
+      if (!e.shiftKey && e.keyCode == 13) {
           e.preventDefault();
           $("#id_form").submit();
       }
@@ -32,7 +32,10 @@
         $.ajax({
             url: "{% url 'ajax-channel' view.args.0 %}",
             success: function (data, textStatus, xhr) {
-                messenger.html(data).scrollTop(messenger.innerHeight());
+                doScroll = (messenger.scrollTop() === messenger[0].scrollHeight);
+                messenger.html(data);
+                if (doScroll)
+                    messenger.scrollTop(messenger[0].scrollHeight);
                 var refresh = parseInt(xhr.getResponseHeader('X-Refresh-After'));
                 setTimeout(refresh_messages, refresh * 1000 + 420);
             }
@@ -40,7 +43,7 @@
     }
     $(function() {
         var firstRefresh = {{ refresh_after | safe }};
-        messenger.scrollTop(messenger.innerHeight());
+        messenger.scrollTop(messenger[0].scrollHeight);
         setTimeout(refresh_messages, firstRefresh * 1000 + 420);
     });
 </script>

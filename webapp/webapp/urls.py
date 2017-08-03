@@ -25,6 +25,7 @@ from team.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', TokenLoginView.as_view(), name='login'),
+    #url(r'^tokens-print-em-all/$', TokensView.as_view(), name='tokens-print'),
     url(r'^logout/$', LogoutView.as_view(template_name='logout.html'), name='logout'),
     url(r'^mine/$', MineView.as_view(), name='mine'),
     url(r'^storage/$', StorageView.as_view(), name='storage'),

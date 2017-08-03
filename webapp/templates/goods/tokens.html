@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print lístečků</title>
+    <style>
+        .token {
+            display: inline-block;
+            margin: 0;
+            padding: 7px 0;
+            box-sizing: border-box;
+            border-collapse: collapse;
+            border-top: 1px dotted black;
+            border-left: 1px dotted black;
+            font: 20px "Source Code Pro";
+            width: 170px;
+        }
+        .token span {
+            display: block;
+            text-align: center;
+        }
+        .token i {
+            display: block;
+            text-align: center;
+            margin: 5px auto;
+            font-size: .8em;
+        }
+    </style>
+</head>
+<body>
+{% for g in goods %}<div class="token">
+    <i>{{ g.type.name }}</i>
+    <span>{{ g.token }}</span>
+</div>{% endfor %}
+</body>
+</html>

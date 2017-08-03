@@ -15,7 +15,7 @@ class Team(models.Model):
 
     @classmethod
     def get_score_table(cls):
-        return cls.objects.all().annotate(score=Sum('goods__sold_for'))
+        return cls.objects.all().annotate(score=Sum('goods__sold_for')).order_by('-score')
 
 
 class Player(models.Model):
